@@ -4,7 +4,9 @@ import random
 import datetime
 import filecmp
 
+
 def get_parts(path):
+    '''returns the parts of a path'''
     current_path = ''
     for char in path:
         if char in r"\/":
@@ -33,6 +35,7 @@ def find_paths(BU_relative_path=''):
 
 
 def init():
+    '''wit init: initiates .wit folder containing (i) images, (ii) staging_area and activated.txt file'''
     init_dir = os.path.join(os.getcwd(), '.wit')
     if os.path.exists(init_dir):
         raise OSError("'.wit' Directory already exists.")
@@ -52,6 +55,7 @@ def init():
 
 
 def add(BU_partial_path):
+    '''wit add'''
     basedir_path, BU_relative_path = find_paths(BU_partial_path)
     staging_path = os.path.join(basedir_path, '.wit\\staging_area')
 
@@ -88,6 +92,7 @@ def add(BU_partial_path):
 
 
 def return_h_m(basedir_path):
+    '''returns the head and master paths'''
     try:
         with open(os.path.join(basedir_path, '.wit', 'references.txt'), 'r') as ref_f:
             ref_c = ref_f.readlines()
@@ -100,6 +105,7 @@ def return_h_m(basedir_path):
 
 
 def commit(message):
+    '''wit commit'''
     commit_id = ''.join(random.choice('1234567890abcdef') for _ in range(40))
     base_dir, _ = find_paths()
     old_head, master = return_h_m(base_dir)
@@ -153,6 +159,7 @@ def commit(message):
 
 
 def status(checkout=False):
+    '''wit status'''
     base_dir, _ = find_paths()
     stage_dir = os.path.join(base_dir, '.wit', 'staging_area')
     image_dir = os.path.join(base_dir, '.wit', 'images')
@@ -189,6 +196,7 @@ def status(checkout=False):
 
 
 def checkout(commit_id):
+    '''wit checkout'''
     base_dir, _ = find_paths()
 
     staging_dir = os.path.join(base_dir, '.wit', 'staging_area')
@@ -245,6 +253,7 @@ def checkout(commit_id):
 
 
 def graph(show_all=None):
+    '''wit graph - plots the current graph for the different branches'''
     base_dir, _ = find_paths()
     image_dir = os.path.join(base_dir, '.wit', 'images')
     images = {}
@@ -288,6 +297,7 @@ def graph(show_all=None):
 
 
 def branch(name):
+    '''wit branch'''
     base_dir, _ = find_paths(os.getcwd())
     head, master = return_h_m(base_dir)
     references_fp = os.path.join(base_dir, '.wit', 'references.txt')
